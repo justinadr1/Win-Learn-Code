@@ -1,32 +1,34 @@
 
 #include <iostream>
-using namespace std;
+#include <thread>
+#include <bitset>
 
 struct Node
 {
     int val;
     Node* next;
-    Node(int x) : val(x), next(nullptr) {}
+    Node(int a) : val(a), next(nullptr) {}
 };
 
 struct Queue
 {
     Node* front;
     Node* rear;
+
     Queue() : front(nullptr), rear(nullptr) {}
 
     bool empty()
     {
-        return front == nullptr;
+        return !front;
     }
 
-    void enqueue(int x)
+    void Enqueue(int a)
     {
-        Node* node = new Node(x);
-        if (!rear)
+        Node* node = new Node(a);
+        if (empty())
         {
             front = rear = node;
-        }    
+        }
         else
         {
             rear->next = node;
@@ -34,50 +36,60 @@ struct Queue
         }
     }
 
-    int dequeu()
-    {
-        if (!front)
-            return 0;
-        Node* t = front;
-        int a = t->val;
-        front = front->next;
-        if (!front)
-            rear = nullptr;
-        delete t;
-        return a;
-    }
-
-    void printAll()
+    int Dequeue()
     {
         if (empty())
         {
-            std::cout << "queue empty\n";
-            return;
+            std::cout << "Queue is empty\n";
         }
-        std::cout << front->val << " <- front\n";
-        Node* curr = front->next;
-        while (curr)
+        else
         {
-            std::cout << curr->val;
-            std::cout << (curr->next != nullptr ? "\n" : " <- rear\n");
-            curr = curr->next;
+            Node* tmp = front;
+            front = tmp->next;
+            int out = tmp->val;
+            if (!front)
+                rear = nullptr;
+            delete tmp;
+            return out;
         }
     }
 
-    int peek()
+    int PeekFront()
     {
-        if (empty())
-            return 0;
         return front->val;
     }
 
+    int PeekRear()
+    {
+        return rear->val;
+    }
+
+    void Print()
+    {
+        if (empty())
+        {
+            std::cout << "Queue is empty\n";
+        }
+        else
+        {
+            std::cout << front->val << " <- front\n";
+            Node* tmp = front->next;
+            while (tmp)
+            {
+                std::cout << tmp->val;
+                std::cout << (tmp->next != nullptr ? "\n" : " <- rear\n");
+                tmp = tmp->next;
+            }
+        }
+    }
 
     ~Queue()
     {
-        while (!empty())
-            dequeu();
+        while(!empty())
+        {
+            Dequeue();
+        }
     }
-
 };
 
 
@@ -85,25 +97,16 @@ int main()
 {
     Queue line;
 
-    line.enqueue(400);
-    line.printAll();
-    std::cout << std::endl;
+    line.Enqueue(400);
+    line.Enqueue(500);
+    line.Enqueue(600);
+    line.Enqueue(700);
+    line.Print();
     
-    line.enqueue(600);
-    line.printAll();
-    std::cout << std::endl;
-    
-    line.enqueue(800);
-    line.printAll();
-    std::cout << std::endl;
-    
-    line.dequeu();
-    line.printAll();
-    std::cout << std::endl;
-    
-    line.dequeu();
-    line.printAll();
-    
-    line.dequeu();
-    line.printAll();
+    std::cout << "\n";
+    int out = line.Dequeue();
+    std::cout << out << " <- dequeue'd\n\n";
+
+    line.Print();
 }
+
