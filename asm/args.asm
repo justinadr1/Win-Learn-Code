@@ -1,42 +1,46 @@
-; Windows x64 NASM
-; Uses MSVCRT printf
-; Accepts argv[1]
 
+bits 64
 default rel
+
+extern ExitProcess
 extern printf
 
 section .data
-    fmt_noarg db "No argument provided", 10, 0
-    fmt_arg   db "argv[1] = %s", 10, 0
+    fmt_count db "Total args: %d", 10, 0
+    fmt_arg db "Arg [%d]: %s", 10, 0
 
 section .text
 global main
 
-; int main(int argc, char** argv)
 main:
-    ; Windows x64 calling convention:
-    ; RCX = argc
-    ; RDX = argv
+    push rbp
+    mov rbp, rsp
+    sub rsp, 32
+    
+    mov r12, rcx
+    mov r13, rdx
 
-    cmp rcx, 2                  ; argc < 2 ?
-    jl  no_argument
-
-    ; argv[1] = *(argv + 8)
-    mov r8, [rdx + 8]            ; r8 = argv[1]
-
-    ; printf("argv[1] = %s\n", argv[1])
-    lea rcx, [fmt_arg]           ; format string
-    mov rdx, r8                  ; string argument
-    sub rsp, 40                  ; shadow space (32) + alignment
+    mov rdx, r12
+    mov rcx, fmt_count  
     call printf
-    add rsp, 40
-    xor eax, eax
-    ret
 
-no_argument:
-    lea rcx, [fmt_noarg]
-    sub rsp, 40
+.loop:
+    ; if (index == argc) exit
+    cmp r14, r12
+    je .done
+
+    ; printf(fmt_arg, index, argv[index])
+    mov rcx, fmt_arg
+    mov rdx, r14
+
+    ; argv[index]
+    ; [r13 + r14 * 8] means start at argv, skip (index * 8) bytes
+    mov r8, [r13 + r14 * 8]
     call printf
-    add rsp, 40
-    xor eax, eax
-    ret
+
+    inc r14
+    jmp .loop
+
+.done:
+    xor rcx, rcx
+    call ExitProcess

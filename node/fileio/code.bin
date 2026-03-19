@@ -1,3 +1,0 @@
-set x 4;
-set y 5;
-get x + y;

@@ -1,8 +1,32 @@
+body {
+   font-family: monospace;
+}
+
+input {
+   padding: 5px;
+}
+
+button {
+   font-family: monospace;
+   border: 1px solid black;
+   padding: 5px;
+}
+button:hover {
+   cursor: pointer;
+   background-color: #87ceeb;
+}
+
 .header {
    color: rgba(159, 139, 58, 0.775);
    text-align: center;
    font-family:'Courier New', Courier, monospace;
    font-size: 44px;
+}
+
+.intro-display-class {
+   font-family: monospace;
+   border: 1px solid #ccc;
+   padding: 5px;
 }
 
 .user-display-class {
@@ -22,12 +46,3 @@
    margin-top: 10px;
 }
 
-button {
-   font-family: monospace;
-   border: 1px solid black;
-   padding: 5px;
-}
-button:hover {
-   cursor: pointer;
-   background-color: #87ceeb;
-}
