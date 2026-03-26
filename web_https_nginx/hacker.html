@@ -1,0 +1,29 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="style.css?v=2">
+    </head>
+    <body>
+        <h1 class="header"> 
+            Black-box testing hardware is easy asf. 
+        </h1>
+        <input type="text" id="input-hacker" placeholder="Enter hacker">
+        <input type="text" id="input-expertise" placeholder="Enter expertise">
+        <input type="file" id="input-avatar" accept="image/*">
+        <br>
+        <button onclick="createHackerPHP()"> Create hacker using PHP </button>
+        <br>
+        <button onclick="createHackerNode()"> Create hacker using Node </button>
+        <br>
+        <button onclick="createHackerDjango()"> Create hacker using Django </button>
+        <p id="status"> </p> 
+        <br>
+        <hr>
+        <br>
+        <div> Hackers loaded via Node </div>
+        <div id="list-hackers">
+            Hackers will appear here
+        </div>
+        <button onclick="getHackersNode()"> Refresh </button>
+        <script src="hacker.js?v=2"> </script>
+    </body>
+</html>

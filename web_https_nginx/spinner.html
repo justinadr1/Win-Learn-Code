@@ -1,0 +1,31 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <svg id="loading-spinner" data-src="/assets/spinner.svg"></svg>
+        <script>
+            window.svgLoader = {
+                isReady: false,
+                onDomReady: function() {
+                    this.isReady = true;
+                    this.initializeIcons();
+                },
+                initializeIcons: function() {
+                    const icons = document.querySelectorAll('svg[data-src]');
+                    icons.forEach(icon => {
+                        const src = icon.getAttribute('data-src');
+                        fetch(src).then(response => response.text()).then(data => {
+                            icon.innerHTML = data;
+                            this.animate(icon);
+                        });
+                    });
+                },
+                animate: function(element) {
+                    element.classList.add('fade-in');
+                }
+            };
+            window.svgLoader.onDomReady(); 
+        </script>
+    </body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hacker Profile</title>
+    <style>
+        body { background:#000; color:#0f0; font-family:monospace; padding:20px; }
+        .stats { border: 1px solid #0f0; padding: 10px; margin-top: 20px; }
+        #hacker-photo { width:150px; border:1px solid #0f0; margin-bottom:10px; }
+    </style>
+</head>
+<body>
+    <h1 id="hacker-name">Loading Profile...</h1>
+    <hr>
+    <div class="stats">
+        <img id="hacker-photo" src="" alt="Profile Pic" style="display:none;">
+        <p>Status: <span id="hacker-status">Scanning database...</span></p>
+        <p>Expertise: <span id="hacker-expertise">Loading...</span></p>
+    </div>
+    <br>
+    <a href='/hacker.html' style='color:#0f0;'> [ Back to List ] </a>
+    <script>
+        async function loadProfile() {
+            const pathParts = window.location.pathname.split('/');
+            const name = decodeURIComponent(pathParts[pathParts.length - 1]);
+            document.getElementById('hacker-name').innerText = "Hacker: " + name;
+            try {
+                const response = await fetch(`/node-api/get-hacker/${name}`);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    
+                    document.getElementById('hacker-status').innerText = "Active - Found in DB";
+                    document.getElementById('hacker-expertise').innerText = data.expertise || "Unknown";
+
+                    if (data.avatar_url) {
+                        const img = document.getElementById('hacker-photo');
+                        img.src = data.avatar_url; 
+                        img.style.display = 'block';
+                    }
+                } else {
+                    document.getElementById('hacker-status').innerText = "Ghost - Not in Database";
+                    document.getElementById('hacker-expertise').innerText = "N/A";
+                }
+            } catch (e) {
+                console.error("Fetch error:", e);
+                document.getElementById('hacker-status').innerText = "Connection Error";
+            }
+        }
+        window.onload = loadProfile;
+    </script>
+</body>
+</html>
