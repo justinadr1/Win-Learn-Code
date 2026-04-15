@@ -1,16 +1,4 @@
-h1 {
-    color: rgba(13, 114, 67, 0.775);
-    text-align: center;
-    font-family:'Courier New', Courier, monospace;
-    font-size: 44px;
-}
-body { 
-    font-family: consolas; 
-    margin: 10px;
-}
-input {
-    padding: 5px;
-}
+
 #status { 
     color: #666; 
     font-style: italic;

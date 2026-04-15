@@ -1,82 +1,87 @@
+// fix the Stack() constructor
+
 #include <iostream>
-#include <thread>
-#include <chrono>
-#include <string>
-using namespace std;
+#include <vector>
 
 class Node
 {
 public:
-    unsigned int value;
+    int val;
     Node* bot;
-    Node(int x) : value(x), bot(nullptr) {}
+    Node() : val(0), bot(nullptr) {}
+    Node(int x) : val(x), bot(nullptr) {}
+    Node(int x, Node* y) : val(x), bot(y) {}
 };
 
 class Stack
 {
 public:
     Node* top;
-
-    Stack() : top(nullptr) {}
-
-    void push(int x)
+    Stack()
     {
-        Node* node = new Node(x); 
-        node->bot = top;
-        top = node;
+        this->top = nullptr;
     }
 
-    unsigned int pop()
+    Stack(int* x, int size)
     {
-        if (!top)
+        this->top = nullptr;
+        if (!x)
+            return;
+        for (int i = 0; i < size; i++)
         {
-            cout << "stack is empty\n";
-            return 0;
+            this->Push(x[i]);
         }
-        Node* tmp = top;
-        unsigned int out = tmp->value;
-        top = tmp->bot;
+    }
+
+    void Push(int x)
+    {
+        Node* node = new Node(x, this->top);
+        this->top = node;
+    }
+
+    int Pop()
+    {
+        if (!this->top)
+            return -1;
+        Node* tmp = this->top;
+        this->top = tmp->bot;
+        int out = tmp->val;
         delete tmp;
         return out;
     }
 
-    void print_stack()
+    void Print()
     {
-        if (!top)
-        {
-            cout << "stack is empty\n";
+        if (!this->top)
             return;
-        }
-
-        cout << top->value << " <- top" << endl;
-        
-        for (Node* t = top->bot; t != nullptr; t = t->bot)
+        std::cout << this->top->val << " <- top\n";
+        Node* node = this->top->bot;
+        while (node)
         {
-            cout << t->value << endl;
+            std::cout << node->val << '\n';
+            node = node->bot;
         }
     }
 
     ~Stack()
     {
-        while (top)
+        while (this->top)
         {
-            pop();
+            Node* tmp = this->top;
+            this->top = tmp->bot;
+            delete tmp;
         }
     }
 };
 
-
-int main() 
+int main()
 {
-    Stack stack;
+    int buffer[] = { 400, 500, 600 };
+    Stack stack(buffer, sizeof(buffer) / sizeof(buffer[0]));
+    stack.Push(750);
+    stack.Print();
+    int out = stack.Pop();
+    std::cout << '\n' << out << " <- popped\n\n";
+    stack.Print();
 
-    stack.push(400);
-    stack.push(500);
-    stack.push(600);
-    stack.push(700);
-    
-    stack.print_stack();
-
-    stack.pop();
-    stack.print_stack();
 }

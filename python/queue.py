@@ -1,66 +1,53 @@
-class Node:
-    def __init__(self, x):
-        self.val = x
-        self.next = None
+# would this also work?
+import sys
 
+class Node:
+    def __init__(self, val, next=None):
+        self.val = val
+        self.next = next
 
 class Queue:
     def __init__(self):
         self.front = None
         self.rear = None
 
-    def empty(self):
-        return self.front is None
-
-    def enqueue(self, x):
-        node = Node(x)
-        if not self.rear:
+    def Enqueue(self, val):
+        node = Node(val)
+        if not self.front:
             self.front = self.rear = node
         else:
             self.rear.next = node
             self.rear = node
 
-    def dequeue(self):
-        if self.empty():
+    def Dequeue(self):
+        if not self.front:
             print("Queue is empty")
             return
-        tmp = self.front
-        val = tmp.val
-        self.front = tmp.next
-        if not self.front:
+        out = self.front.val
+        self.front = self.front.next
+        if self.front is None:
             self.rear = None
-        return val
-
-    def peek(self):
-        if self.empty():
-            return None
-        return self.front.val
-
-    def print(self):
-        if self.empty():
-            print("Queue empty")
+        return out
+    
+    def Print(self):
+        if not self.front:
+            print("Queue is empty")
             return
-
         print(f"{self.front.val} <- front")
+        tmp = self.front.next
+        while tmp:
+            if not tmp.next:
+                print(f"{tmp.val} <- rear")
+                break
+            print(tmp.val)
+            tmp = tmp.next
 
-        curr = self.front.next
-        while curr:
-            if not curr.next:
-                print(f"{curr.val} <- rear")
-            else:
-                print(curr.val)
-            curr = curr.next
+q = Queue()
 
+q.Enqueue(40)
+q.Enqueue(50)
+q.Enqueue(60)
+q.Enqueue(70)
 
-line = Queue()
-
-line.enqueue(400)
-line.enqueue(500)
-line.enqueue(600)
-line.enqueue(700)
-line.print()
-
-x = line.dequeue()
-
-line.print()
-print()
+q.Print()
+            

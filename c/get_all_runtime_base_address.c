@@ -4,14 +4,13 @@
 #include <string.h>
 #include <intrin.h>
 
-
 void printAllSectionBases(ULONG_PTR imageBase) 
 {
     PIMAGE_DOS_HEADER dosHeader = (PIMAGE_DOS_HEADER)imageBase;
     PIMAGE_NT_HEADERS ntHeaders = (PIMAGE_NT_HEADERS)(imageBase + dosHeader->e_lfanew);
 
     PIMAGE_SECTION_HEADER section = IMAGE_FIRST_SECTION(ntHeaders);
-
+    
     printf("Listing sections for ImageBase: 0x%p\n", (void*)imageBase);
     printf("----------------------------------------------------------\n");
     printf("%-8s | %-18s | %-10s\n", "Name", "Runtime Base", "Virtual Size");

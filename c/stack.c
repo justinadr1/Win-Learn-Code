@@ -1,95 +1,98 @@
-#include <windows.h>
+#include <string.h>
 #include <stdio.h>
-
+#include <stdlib.h>
+#include <windows.h>
 
 typedef struct Node_
 {
-    unsigned int val;
     struct Node_* bot;
+    int val;
 } Node;
 
 typedef struct Stack_
 {
     Node* top;
+    int len;
 } Stack;
 
-void push_stack(Stack* stack, int a)
+void Push(Stack* s, int a) 
 {
-    Node* node = (Node*)malloc(sizeof(Node));
+    Node* node = malloc(sizeof(Node));
     node->val = a;
-    node->bot = stack->top;
-    stack->top = node;
+    node->bot = s->top;
+    s->top = node;
+    s->len++;
 }
 
-unsigned int pop_stack(Stack* stack)
+int Pop(Stack* s)
 {
-    if (!stack->top)
-    {
-        printf("Stack is emtpy\n");
-        return 0;
-    }
-
-    Node* tmp = stack->top;
+    if (!s->top)
+        return -1;
+    Node* tmp = s->top;
+    s->top = tmp->bot;
     int out = tmp->val;
-    stack->top = tmp->bot;
+    s->len--;
     free(tmp);
     return out;
 }
 
-int peek_stack(Stack* stack)
+void Print(Stack* s)
 {
-    if (!stack->top)
-    {
-        printf("stack is empty\n");
-        return 0;
-    }
-    return stack->top->val;
-}
-
-void print_stack(Stack* stack)
-{
-    if (!stack->top)
-    {
-        printf("Stack is empty\n");
+    if (!s->top)
         return;
-    }
-
-    printf("%u <- top\n", stack->top->val);
-
-    Node* node = stack->top->bot;
-    while (node)
+    int len = s->len - 1;
+    printf("%i: %i <- top\n", len--, s->top->val);
+    Node* t = s->top->bot;
+    for (int i = len; i >= 0; i--)
     {
-        printf("%u\n", node->val);
-        node = node->bot;
+        printf("%i: %i\n", i, t->val);
+        t = t->bot;
     }
 }
 
-void free_stack(Stack* stack)
+void Delete(Stack* s)
 {
-    while (stack->top)
+    while (s->top)
     {
-        struct Node* t = stack->top;
-        stack->top = stack->top->bot;
+        Node* t = s->top;
+        s->top = t->bot;
         free(t);
     }
 }
 
-int main(void)
+void Reverse(Stack* s)
 {
-    Stack stack = { NULL };
+    Node* prev = NULL;
+    Node* curr = s->top;
+    Node* next = NULL;
+    while (curr)
+    {
+        next = curr->bot;
+        curr->bot = prev;
+        prev = curr;
+        curr = next;
+    }
+    s->top = prev;
+}
 
-    push_stack(&stack, 400);
-    push_stack(&stack, 500);
-    push_stack(&stack, 600);
-    push_stack(&stack, 700);
 
-    print_stack(&stack);
+int main(int argc, char** argv)
+{
+    Stack stack;
+    stack.top = NULL;
+    stack.len = 0;
+    Push(&stack, 500);
+    Push(&stack, 200);
+    Push(&stack, 300);
+    Push(&stack, 100);
+    Push(&stack, 400);
+    
+    Print(&stack);
 
+    Reverse(&stack);
     printf("\n");
-
-    printf("popped: %u\n\n", pop_stack(&stack));
-
-    print_stack(&stack);
-
-    free_stack(&stack);
+    Print(&stack);
+    
+    
+    Delete(&stack); 
 }

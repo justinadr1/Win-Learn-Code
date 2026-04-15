@@ -1,54 +1,42 @@
-
-
 class Node:
-    def __init__(self, x):
-        self.val = x
-        self.bot = None
+    def __init__(self, val, next):
+        self.val = val
+        self.bot = next
 
 class Stack:
     def __init__(self):
         self.top = None
 
-    def empty(self) -> bool:
-        return self.top is None
-
-    def push(self, x):
-        node = Node(x)  
-        node.bot = self.top
+    def Push(self, val):
+        node = Node(val, self.top)
         self.top = node
-    
-    def pop(self) -> int:
-        if self.empty():
-            print("stack empty")
-            return
-        tmp = self.top
-        val = tmp.val
-        self.top = tmp.bot
-        return val
 
-    def print(self):
-        print(f"{self.top.val} <- top")
-        node = self.top.bot
-        while node:
-            print(f"{node.val}")
-            node = node.bot
-    def peek(self):
-        if self.empty():
-            print("Stack empty")
-            return None
-        return self.top.val
+    def Pop(self):
+        if not self.top:
+            print("Stack is empty")
+            return
+        out = self.top.val
+        self.top = self.top.bot
+        return out
     
+    def Print(self):
+        if not self.top:
+            print("Stack is empty")
+            return
+        print(f"{self.top.val} <- top")
+        tmp = self.top.bot
+        while tmp:
+            print(tmp.val)
+            tmp = tmp.bot
+
 stack = Stack()
 
-stack.push(400)
-stack.push(500)
-stack.push(600)
-stack.push(700)
+for x in range(100, 900, 100):
+    stack.Push(stack)
 
-stack.print()
-print()
+stack.Print()
 
-y = stack.pop()
-stack.print()
-print()
+out = stack.Pop()
+print(f"popped {out}")
 
+stack.Print()

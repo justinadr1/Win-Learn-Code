@@ -5,7 +5,6 @@ const path = require('path');
 const mysql = require('mysql2');
 const cors = require('cors');
 const multer = require('multer');
-const bcrypt = require('bcrypt');
 const session = require('express-session');
 
 const app = express();
@@ -104,10 +103,18 @@ app.delete('/delete-hacker/:name', (req, res) => {
 });
 
 app.post('/send', (req, res) => {
-    // req.body.message must match the name attribute from <input>
     const msg = req.body.message;
     console.log(req.body);
     res.send(`Message ${msg} has been received by server`)
+});
+
+app.get('/temp', (req, res) => {
+    const person = {
+        name: "justin",
+        age: 22,
+        profession: ["hardware architecture research", "software reverse engineering"]
+    };
+    res.json(person);
 })
 
 

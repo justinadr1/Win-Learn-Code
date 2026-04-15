@@ -1,6 +1,5 @@
 
-.header {
-   color: rgba(32, 126, 152, 0.775);
+h1 {
    text-align: center;
    font-family:'Courier New', Courier, monospace;
    font-size: 44px;
@@ -13,15 +12,15 @@ body {
 
 input {
     font-family: 'consolas';
-    padding: 5px;
-    font-size: 30px;
+    padding: 3px;
+    font-size: 20px;
 }
 
 button {
    font-family: 'consolas';
    border: 1px solid black;
-   padding: 5px;
-   font-size: 30px;
+   padding: 3px;
+   font-size: 20px;
 }
 button:hover {
    cursor: pointer;

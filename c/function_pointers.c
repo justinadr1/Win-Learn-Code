@@ -1,32 +1,35 @@
+#include <windows.h>
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <intrin.h>
 
-int addone(int a)
+int sub(int a, int b)
 {
-    return a + 1;
+    return a - b;
 }
 
-int minusone(int a)
+int add(int a, int b)
 {
-    return a - 1;
+    return a + b;
 }
 
-int calc(int (*func)(int), int val)
+int calc(int(*func)(int, int), int x, int y)
 {
-    return func(val);
+    return func(x, y);
 }
 
-
-int main()
-{   
-    printf("%p\n", calc);
-    printf("%p\n", addone);
-    printf("%p\n", minusone);
+int main(int argc, char** argv)
+{
+    printf("%i\n", calc(add, 4, 5));
     
-    printf("%i\n", calc(addone, 5));
+    printf("%i\n", calc(sub, 10, 8));
 
-    printf("%i\n", calc(minusone, 5));
-     
-    int (*_addOne)(int) = addone;
+    int(*addptr)(int, int) = add;
 
-    printf("%i\n", _addOne(10));
+    int(**ptr_to_addptr)(int, int) = &addptr;
+
+    int h = (*ptr_to_addptr)(10, 20);
+
+    printf("%i\n", h);
 }
